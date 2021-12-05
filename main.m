@@ -91,18 +91,12 @@ classdef main < matlab.apps.AppBase
             
                 % Convert image to greyscale
                 I = im2gray(imread(filename));
-                
                 % Ensure matching type for phantom (most images are 
                 % imported as uint8
                 I = double(I);
-                    
                 % Normalize image data to [0, 1]
                 I = I / 255;
-                
-        %                 I(I < 1) = -1000;
-                
                 app.P = I;
-                
                 % Show image label with name of file
                 showHideImageLabel(app, true, file)
             end

@@ -38,34 +38,34 @@ classdef phantomPreviewApp < matlab.apps.AppBase
         
         function updateimage(app,im)
             app.P = im;
-            
+
             I = imshow(im, [], 'Parent', app.ImageAxes, ...
                 'DisplayRange', [0, 1]);
-            
+
             I.HitTest = 'off';
             set(app.ImageAxes, 'PickableParts', 'all')
-            
+
             colorbar(app.ImageAxes)
-                    
+
             % Plot all histograms with the same data for grayscale
             histb = histogram(app.HistogramAxes, im, ...
                 'EdgeColor', 'none');
-        
+
             % Get largest bin count
             maxb = max(histb.BinCounts);
             maxcount = maxb;
-            
+
             % Set y axes limits based on largest bin count
             app.HistogramAxes.YLim = [0 maxcount];
             app.HistogramAxes.YTick = round( ...
                 [0 maxcount/2 maxcount], 2, 'significant');
-            
+
             [app.WidthEditField.Value, ...
                 app.HeightEditField.Value] = size(im);
-            
+
             maxValue = max(im, [], 'all');
             minValue = min(im, [], 'all');
-                       
+
             app.MaxvalueEditField.Value = double(maxValue);
             app.MinvalueEditField.Value = double(minValue);
         end

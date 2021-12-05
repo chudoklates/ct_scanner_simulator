@@ -158,18 +158,18 @@ classdef tomogramPreviewApp < matlab.apps.AppBase
         % Value changing function: WindowcenterSlider
         function WindowcenterSliderValueChanging(app, event)
             changingValue = event.Value;
-            
+
             app.WindowcenterEditField.Value = changingValue;
             windowsize = app.WindowsizeEditField.Value;
-            
+
             d = windowsize / 2;
-            
+
             newMax = min(app.maxV, changingValue + d);
             newMin = max(app.minV, changingValue - d);
-            
+
             app.MaxvalueEditField.Value = newMax;
             app.MinvalueEditField.Value = newMin;
-            
+
             updateWindow(app, app.T, newMin, newMax)
         end
 
@@ -221,7 +221,7 @@ classdef tomogramPreviewApp < matlab.apps.AppBase
             value = app.MaxvalueEditField.Value;
             minValue = app.MinvalueEditField.Value;
             
-            newMax = max(minValue + 1, ...
+            newMax = max(minValue + app.delta, ...
                 min(app.maxV, value));
             app.MaxvalueEditField.Value = newMax;
             
@@ -241,7 +241,7 @@ classdef tomogramPreviewApp < matlab.apps.AppBase
             maxValue = app.MaxvalueEditField.Value;
             
             newMin = min(max(app.minV, value), ...
-                maxValue - 1);
+                maxValue - app.delta);
             app.MinvalueEditField.Value = newMin;
             
             newSize = maxValue - newMin;
