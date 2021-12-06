@@ -123,11 +123,11 @@ classdef tomogramPreviewApp < matlab.apps.AppBase
             app.TomogramAxes.Colormap = gray(256);
             axis(app.TomogramAxes, 'image');
             
-            [app.accuracy, D] = ...
-                computeAccuracyScore(P, T);
+            [app.accuracy, D, x, y] = ...
+                accuracyScoreWithShift(P, T, 10);
             
-%             app.atXYLabel.Text = "at (" + int2str(x) + ", " + ...
-%                 int2str(y) + ")";
+            app.atXYLabel.Text = "at (" + int2str(x) + ", " + ...
+                int2str(y) + ")";
             
             app.ReconstructionerrorEditField.Value = double( ...
                 app.accuracy * 100); % Convert to percent
@@ -287,7 +287,13 @@ classdef tomogramPreviewApp < matlab.apps.AppBase
             if ix == 1
                 writematrix(app.T, filename)
             else
-                imwrite(app.T, filename)
+                normalised = app.T;
+                
+                if app.maxV > 0
+                    normalised = normalised/app.maxV;
+                end
+                
+                imwrite(normalised, filename)
             end
         end
     end
@@ -436,7 +442,7 @@ classdef tomogramPreviewApp < matlab.apps.AppBase
             % Create atXYLabel
             app.atXYLabel = uilabel(app.UIFigure);
             app.atXYLabel.HorizontalAlignment = 'right';
-            app.atXYLabel.Visible = 'off';
+            app.atXYLabel.Visible = 'on';
             app.atXYLabel.Position = [1097 536 101 22];
             app.atXYLabel.Text = 'at (X, Y)';
 
